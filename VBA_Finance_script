@@ -1,0 +1,45 @@
+VBA Script:
+
+Sub VBAFinance_reports_auto()
+
+    'Convert_Number_Stored_as_Text_to_Number()
+    
+    'Variable declaration
+    Dim rngRange As Range
+    
+   'Define Range which you want to convert to range
+    Set rngRange = ActiveSheet.Range("T3:Z50")
+        
+    'Convert Number
+    rngRange.Value = rngRange.Value
+    
+    'Del blank rows
+    Rows("1:1").Select
+    Selection.Delete Shift:=xlUp
+    Columns("A:A").Select
+    Selection.Delete Shift:=xlToLeft
+    Range("A1").Select
+    Selection.End(xlToRight).Select
+    ActiveWindow.SmallScroll ToRight:=1
+    Columns("Z:AB").Select
+    Selection.Delete Shift:=xlToLeft
+   
+   'find last row
+   lastRow = Cells(Rows.Count, 1).End(xlUp).Row + 1
+   Range("s" & lastRow) = Application.WorksheetFunction.Sum(Range("s2:s" & lastRow))
+   Range("u" & lastRow) = Application.WorksheetFunction.Sum(Range("u2:u" & lastRow))
+   Range("x" & lastRow) = Application.WorksheetFunction.Sum(Range("x2:x" & lastRow))
+   Range("y" & lastRow) = Application.WorksheetFunction.Sum(Range("y2:y" & lastRow))
+     'Range(Range("s" & lastRow), Range("s" & lastRow).End(xlToRight)).Interior.Color = RGB(255, 255, 0) ' (hightlight yellow not done)
+   
+   
+   'Highlight yellow
+      Dim ws As Worksheet: Set ws = ThisWorkbook.Sheets("(XX.06.XX - XX.05.XX) Finance -")
+    With ws
+        Dim lRow As Long: lRow = .Cells(Rows.Count, 19).End(xlUp).Row 'Find the last non-blank cell in column A(1)
+        Dim lCol As Long: lCol = .Cells(1, Columns.Count).End(xlToLeft).Column 'Find the last non-blank cell in row 1
+
+        .Range(.Cells(lRow, 1), .Cells(lRow, lCol)).Interior.Color = RGB(255, 255, 0)
+        '.Range(.Cells(1, lCol), .Cells(lRow, lCol)).Interior.Color = RGB(255, 255, 0)
+    End With
+End Sub
